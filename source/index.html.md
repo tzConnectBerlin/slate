@@ -196,7 +196,7 @@ Parameter | Description
 id | The id of the NFT to retrieve
 
 
-# Cart endpoints
+# Cart
 
 All endpoints related to shopping cart management.
 
