@@ -252,7 +252,7 @@ http "/users/cart/list"
 
 ## Add NFT
 
-Note, this may fail if:
+Note, this may fail if
 
 * This NFT is already sold out
 * All remaining editions of this NFT are already in someone elses cart
