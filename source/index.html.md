@@ -105,12 +105,14 @@ firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagin
 
 ## Get NFTs filtered
 
-Currently, NFTs can be filtered by list of categories (comma separated category id) and nft owner address.
+Currently, NFTs can be filtered by:
+- list of categories (comma separated category id)
+- NFT owner address.
 
 At least one filter must be specified (so, at least a category or at least the address). If both are specified, NFTs that fit both filters are returned (so it's AND logic here, not OR).
 
 ```shell
-http "/nfts/filter categories==1,2 address==tz1"
+http "/nfts/filter" categories==1,2 address==tz1
 ```
 
 > The above command returns JSON structured like this:
@@ -141,8 +143,6 @@ http "/nfts/filter categories==1,2 address==tz1"
 }
 ```
 
-This endpoint retrieves all kittens.
-
 ### HTTP Request
 
 `GET /nfts/filter`
@@ -160,10 +160,9 @@ firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagin
 ## Get a Specific NFT
 
 ```shell
-http "/nfts/:id"
+http "/nfts/1"
 ```
-> replace `:id` with an NFT id
-
+> replace `1` with any NFT id
 
 > The above command returns JSON structured like this:
 
@@ -190,61 +189,10 @@ http "/nfts/:id"
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET /nfts/:id`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+id | The id of the NFT to retrieve
