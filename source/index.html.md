@@ -280,6 +280,7 @@ EOF
 ```
 
 > The above command returns JSON structured like this:
+
 ```json
 {
     "address": "addr",
@@ -308,6 +309,7 @@ http "/auth/logged_user" Authorization:"Bearer $access_token"
 ```
 
 > The above command returns JSON structured like this:
+
 ```json
 {
     "address": "addr",
