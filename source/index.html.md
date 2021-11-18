@@ -21,7 +21,7 @@ meta:
 
 # Introduction
 
-Welcome to the Kanvas API!
+Welcome to the Kanvas API specs!
 
 The API examples use [http](https://httpie.io/), basically cURL but a bit easier to use.
 
