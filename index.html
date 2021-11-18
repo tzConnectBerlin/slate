@@ -595,10 +595,10 @@ the last POST action (add, remove).</p>
 <p><code>GET /users/cart/list</code></p>
 <h2 id='add-nft'>Add NFT</h2>
 <p>Note, this may fail if:
-- This NFT is already sold out
-- All remaining editions of this NFT are already in someone elses cart
-- This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/cart/add/2"</span>
+* This NFT is already sold out
+* All remaining editions of this NFT are already in someone elses cart
+* This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/add/2"</span>
 </code></pre></div><h3 id='http-request-5'>HTTP Request</h3>
 <p><code>POST /users/cart/add/:id</code></p>
 <h3 id='url-parameters-2'>URL Parameters</h3>
@@ -613,7 +613,7 @@ the last POST action (add, remove).</p>
 <td>The id of the NFT to add to the cart</td>
 </tr>
 </tbody></table>
-<h2 id='remove-nft'>Remove NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/cart/remove/2"</span>
+<h2 id='remove-nft'>Remove NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/remove/2"</span>
 </code></pre></div><h3 id='http-request-6'>HTTP Request</h3>
 <p><code>POST /users/cart/remove/:id</code></p>
 <h3 id='url-parameters-3'>URL Parameters</h3>
