@@ -333,6 +333,23 @@
               </ul>
           </li>
           <li>
+            <a href="#cart-endpoints" class="toc-h1 toc-link" data-title="Cart endpoints">Cart endpoints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-nfts-in-the-cart" class="toc-h2 toc-link" data-title="List NFTs in the cart">List NFTs in the cart</a>
+                  </li>
+                  <li>
+                    <a href="#add-nft" class="toc-h2 toc-link" data-title="Add NFT">Add NFT</a>
+                  </li>
+                  <li>
+                    <a href="#remove-nft" class="toc-h2 toc-link" data-title="Remove NFT">Remove NFT</a>
+                  </li>
+                  <li>
+                    <a href="#checkout-cart" class="toc-h2 toc-link" data-title="Checkout cart">Checkout cart</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </ul>
@@ -398,9 +415,7 @@ You must replace <code>$access_token</code> with your personal API key.
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
+</span></code></pre></div><h3 id='http-request'>HTTP Request</h3>
 <p><code>GET /nfts</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
@@ -473,7 +488,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <tr>
 <td>categories</td>
 <td>undefined</td>
-<td>Filter by comma separated list of categories identifiers (eg: <code>1,4,10</code>). Multiple entries here means: find NFTs that belong to at least one of the given categories.</td>
+<td>Get NFTs that belong to any of a comma separated set of category identifiers (eg: <code>1,4,10</code>). Multiple entries here means: find NFTs that belong to at least one of the given categories.</td>
 </tr>
 <tr>
 <td>address</td>
@@ -496,10 +511,10 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.</td>
 </tr>
 </tbody></table>
-<h2 id='get-a-specific-nft'>Get a Specific NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/1"</span>
+<h2 id='get-a-specific-nft'>Get a Specific NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/2"</span>
 </code></pre></div>
 <blockquote>
-<p>replace <code>1</code> with any NFT id</p>
+<p>replace <code>2</code> with any NFT id</p>
 
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
@@ -535,6 +550,90 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>The id of the NFT to retrieve</td>
 </tr>
 </tbody></table>
+<h1 id='cart-endpoints'>Cart endpoints</h1>
+<p>All endpoints related to shopping cart management.</p>
+
+<p>A cart session is either derived from the cookie session (when not logged in)
+or from the cart session that is connected to the logged in user. When logging
+in after having done some cart operations on the cookie session, the user (if
+not already connected to another cart session) is connected to the cookie based
+cart session. From thereon this cart session stays connected to this user until
+either it is checked out by the user, or it expires.</p>
+
+<p>The only endpoint that requires being logged in is the checkout endpoint.</p>
+
+<p>Every cart session has an expiration date. Currently this is 30 minutes after
+the last POST action (add, remove).</p>
+<h2 id='list-nfts-in-the-cart'>List NFTs in the cart</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/cart/list"</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"expiresAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-11-18T14:29:59.403Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"nfts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeNFT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"encoded"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-4'>HTTP Request</h3>
+<p><code>GET /users/cart/list</code></p>
+<h2 id='add-nft'>Add NFT</h2>
+<p>Note, this may fail if:
+- This NFT is already sold out
+- All remaining editions of this NFT are already in someone elses cart
+- This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/cart/add/2"</span>
+</code></pre></div><h3 id='http-request-5'>HTTP Request</h3>
+<p><code>POST /users/cart/add/:id</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>The id of the NFT to add to the cart</td>
+</tr>
+</tbody></table>
+<h2 id='remove-nft'>Remove NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/cart/remove/2"</span>
+</code></pre></div><h3 id='http-request-6'>HTTP Request</h3>
+<p><code>POST /users/cart/remove/:id</code></p>
+<h3 id='url-parameters-3'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>The id of the NFT to remove from the cart</td>
+</tr>
+</tbody></table>
+<h2 id='checkout-cart'>Checkout cart</h2>
+<p>Placeholder: for now, all NFTs in the cart are immediately assigned to the
+user, without any sort of payment / minting.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/checkout"</span>
+</code></pre></div><h3 id='http-request-7'>HTTP Request</h3>
+<p><code>POST /users/cart/checkout</code></p>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">
 This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
