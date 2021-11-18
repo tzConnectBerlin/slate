@@ -255,7 +255,7 @@ http "/users/cart/list"
 Note, this may fail if
 
 * This NFT is already sold out
-* All remaining editions of this NFT are already in someone elses cart
+* All remaining editions of this NFT are already in other active carts
 * This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)
 
 ```shell
