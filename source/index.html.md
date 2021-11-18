@@ -55,7 +55,7 @@ You must replace <code>$access_token</code> with your personal API key.
 
 # NFTs
 
-## Get All NFTs
+## Get all NFTs
 
 ```shell
 http "/nfts"
@@ -196,6 +196,130 @@ Parameter | Description
 id | The id of the NFT to retrieve
 
 
+# Categories
+
+## Get all categories
+
+```shell
+http "/categories"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+[
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "description": "its part of rock",
+                        "id": 4,
+                        "name": "nirvana"
+                    }
+                ],
+                "description": "its part of a mountain",
+                "id": 3,
+                "name": "rock"
+            }
+        ],
+        "description": "steep hills that go heigh",
+        "id": 1,
+        "name": "mountains"
+    },
+    {
+        "children": [],
+        "description": "its not actually blue",
+        "id": 2,
+        "name": "water"
+    }
+]
+```
+
+### HTTP Request
+
+`GET /categories`
+
+
+# Users auth
+
+## Create account
+
+```shell
+http POST "/auth/register" <<EOF
+{
+    "address": "$user_address",
+    "signedPayload": "$user_password"
+}
+EOF
+```
+
+### HTTP Request
+
+`POST /auth/register`
+
+### Body parameters
+
+Parameter | Description
+--------- | -----------
+address | tezos address
+signedPayload | password
+name | username (currently it's optional)
+
+## Login
+
+```shell
+http POST "/auth/login" <<EOF
+{
+    "address": "$user_address",
+    "signedPayload": "$user_password"
+}
+EOF
+```
+
+> The above command returns JSON structured like this:
+```json
+{
+    "address": "addr",
+    "id": 1,
+    "maxAge": "86400000",
+    "name": null,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6bnVsbCwiYWRkcmVzcyI6ImFkZHIiLCJyb2xlcyI6W10sImlhdCI6MTYzNzI0ODM5Nn0.HovGQYf8QaVh0ZEdLhYBzBYqqYTrH34j6MUDBw8Bb2M"
+}
+```
+
+### HTTP Request
+
+`POST /auth/login`
+
+### Body parameters
+
+Parameter | Description
+--------- | -----------
+address | tezos address
+signedPayload | password
+
+## Logged in user
+
+```shell
+http "/auth/logged_user" Authorization:"Bearer $access_token"
+```
+
+> The above command returns JSON structured like this:
+```json
+{
+    "address": "addr",
+    "id": 1,
+    "name": null,
+    "roles": []
+}
+```
+
+### HTTP Request
+
+`GET /auth/logged_user`
+
 # Cart
 
 All endpoints related to shopping cart management.
@@ -294,7 +418,7 @@ Placeholder: for now, all NFTs in the cart are immediately assigned to the
 user, without any sort of payment / minting.
 
 ```shell
-http POST "/users/cart/checkout"
+http POST "/users/cart/checkout" Authorization:"Bearer $access_token"
 ```
 
 ### HTTP Request
