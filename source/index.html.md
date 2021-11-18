@@ -39,7 +39,7 @@ http POST "auth/login" <<EOF
 EOF
 ```
 
-> To authorize at authorization guarded endpoints, use this code:
+> To authorize at authorization guarded endpoints eg `/auth/logged_in`, use this code:
 
 ```shell
 # With shell, you can just pass the correct header with each request
