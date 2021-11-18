@@ -253,12 +253,12 @@ http "/users/cart/list"
 ## Add NFT
 
 Note, this may fail if:
-- This NFT is already sold out
-- All remaining editions of this NFT are already in someone elses cart
-- This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)
+* This NFT is already sold out
+* All remaining editions of this NFT are already in someone elses cart
+* This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)
 
 ```shell
-http "/users/cart/add/2"
+http POST "/users/cart/add/2"
 ```
 
 ### HTTP Request
@@ -274,7 +274,7 @@ id | The id of the NFT to add to the cart
 ## Remove NFT
 
 ```shell
-http "/users/cart/remove/2"
+http POST "/users/cart/remove/2"
 ```
 
 ### HTTP Request
