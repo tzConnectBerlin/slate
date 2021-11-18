@@ -52,6 +52,7 @@ http GET "/auth/logged_in" \
 You must replace <code>$access_token</code> with your personal API key.
 </aside>
 
+For more info see the "Users auth" section.
 
 # NFTs
 
