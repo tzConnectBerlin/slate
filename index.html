@@ -594,10 +594,13 @@ the last POST action (add, remove).</p>
 </span></code></pre></div><h3 id='http-request-4'>HTTP Request</h3>
 <p><code>GET /users/cart/list</code></p>
 <h2 id='add-nft'>Add NFT</h2>
-<p>Note, this may fail if:
-* This NFT is already sold out
-* All remaining editions of this NFT are already in someone elses cart
-* This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</p>
+<p>Note, this may fail if:</p>
+
+<ul>
+<li>This NFT is already sold out</li>
+<li>All remaining editions of this NFT are already in someone elses cart</li>
+<li>This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</li>
+</ul>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/add/2"</span>
 </code></pre></div><h3 id='http-request-5'>HTTP Request</h3>
 <p><code>POST /users/cart/add/:id</code></p>
