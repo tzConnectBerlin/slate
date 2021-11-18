@@ -27,11 +27,11 @@ The API examples use [http](https://httpie.io/), basically cURL but a bit easier
 
 # Authentication
 
-Endpoints that require a logged in user expect a valid token in the Authorization header. To get new a token, call `auth/login`.
+Endpoints that require a logged in user expect a valid token in the Authorization header. To get new a token, call `/auth/login`.
 
 ```shell
 # Login, and get an access token:
-http POST "auth/login" <<EOF
+http POST "/auth/login" <<EOF
 {
     "address": "$user_address",
     "signedPayload": "$user_password",
@@ -43,7 +43,7 @@ EOF
 
 ```shell
 # With shell, you can just pass the correct header with each request
-http GET "auth/logged_in" \
+http GET "/auth/logged_in" \
   Authorization:"Bearer $access_token"
 ```
 
@@ -54,55 +54,40 @@ You must replace <code>$access_token</code> with your personal API key.
 </aside>
 
 
-# Kittens
+# NFTs
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+## Get All NFTs
 
 ```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+http "/nfts"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+    "currentPage": 1,
+    "numberOfPages": 4,
+    "nfts": [
+        {
+            "id": 1,
+            "name": "SomeNFT",
+            "tokenId": null,
+            "contract": null,
+            "dataUri": null,
+            "ipfsHash": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
+            "metadata": {
+                "json": "encoded"
+            },
+            "categories": [
+                {
+                    "name": "mountains",
+                    "description": "steep hills that go heigh"
+                }
+            ]
+        }
+    ]
+}
 ```
 
 This endpoint retrieves all kittens.
@@ -115,8 +100,9 @@ This endpoint retrieves all kittens.
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+page | 1 | Paginate through results, first page is 1
+pageSize | 10 | Number of NFTs to fit on a single page
+firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, the value will be cloned to the return json.
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
