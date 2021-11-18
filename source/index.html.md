@@ -89,8 +89,6 @@ http "/nfts"
 }
 ```
 
-This endpoint retrieves all kittens.
-
 ### HTTP Request
 
 `GET /nfts`
@@ -151,7 +149,7 @@ http "/nfts/filter" categories==1,2 address==tz1
 
 Parameter | Default | Description
 --------- | ------- | -----------
-categories | undefined | Filter by comma separated list of categories identifiers (eg: `1,4,10`). Multiple entries here means: find NFTs that belong to at least one of the given categories.
+categories | undefined | Get NFTs that belong to any of a comma separated set of category identifiers (eg: `1,4,10`). Multiple entries here means: find NFTs that belong to at least one of the given categories.
 address | undefined | Get NFTs that are owned by some tezos address.
 page | 1 | Paginate through results, first page is 1.
 pageSize | 10 | Number of NFTs to fit on a single page
@@ -160,9 +158,9 @@ firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagin
 ## Get a Specific NFT
 
 ```shell
-http "/nfts/1"
+http "/nfts/2"
 ```
-> replace `1` with any NFT id
+> replace `2` with any NFT id
 
 > The above command returns JSON structured like this:
 
@@ -196,3 +194,108 @@ http "/nfts/1"
 Parameter | Description
 --------- | -----------
 id | The id of the NFT to retrieve
+
+
+# Cart endpoints
+
+All endpoints related to shopping cart management.
+
+A cart session is either derived from the cookie session (when not logged in)
+or from the cart session that is connected to the logged in user. When logging
+in after having done some cart operations on the cookie session, the user (if
+not already connected to another cart session) is connected to the cookie based
+cart session. From thereon this cart session stays connected to this user until
+either it is checked out by the user, or it expires.
+
+The only endpoint that requires being logged in is the checkout endpoint.
+
+Every cart session has an expiration date. Currently this is 30 minutes after
+the last POST action (add, remove).
+
+## List NFTs in the cart
+
+```shell
+http "/users/cart/list"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "expiresAt": "2021-11-18T14:29:59.403Z",
+    "nfts": [
+        {
+            "id": 1,
+            "name": "SomeNFT",
+            "tokenId": null,
+            "contract": null,
+            "ipfsHash": "ipfs://somenft",
+            "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
+            "metadata": {
+                "json": "encoded"
+            },
+            "categories": [
+                {
+                    "name": "mountains",
+                    "description": "steep hills that go heigh"
+                }
+            ]
+        }
+    ]
+}
+```
+
+### HTTP Request
+
+`GET /users/cart/list`
+
+
+## Add NFT
+
+Note, this may fail if:
+- This NFT is already sold out
+- All remaining editions of this NFT are already in someone elses cart
+- This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)
+
+```shell
+http "/users/cart/add/2"
+```
+
+### HTTP Request
+
+`POST /users/cart/add/:id`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+id | The id of the NFT to add to the cart
+
+## Remove NFT
+
+```shell
+http "/users/cart/remove/2"
+```
+
+### HTTP Request
+
+`POST /users/cart/remove/:id`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+id | The id of the NFT to remove from the cart
+
+## Checkout cart
+
+Placeholder: for now, all NFTs in the cart are immediately assigned to the
+user, without any sort of payment / minting.
+
+```shell
+http POST "/users/cart/checkout"
+```
+
+### HTTP Request
+
+`POST /users/cart/checkout`
