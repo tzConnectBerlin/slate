@@ -42,7 +42,6 @@ EOF
 > To authorize at authorization guarded endpoints eg `/auth/logged_in`, use this code:
 
 ```shell
-# With shell, you can just pass the correct header with each request
 http GET "/auth/logged_in" \
   Authorization:"Bearer $access_token"
 ```
@@ -74,8 +73,8 @@ http "/nfts"
             "name": "SomeNFT",
             "tokenId": null,
             "contract": null,
-            "dataUri": null,
-            "ipfsHash": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
+            "ipfsHash": "ipfs://somenft",
+            "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
             "metadata": {
                 "json": "encoded"
             },
@@ -94,7 +93,7 @@ This endpoint retrieves all kittens.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET /nfts`
 
 ### Query Parameters
 
@@ -102,55 +101,92 @@ Parameter | Default | Description
 --------- | ------- | -----------
 page | 1 | Paginate through results, first page is 1
 pageSize | 10 | Number of NFTs to fit on a single page
-firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, the value will be cloned to the return json.
+firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+## Get NFTs filtered
 
-## Get a Specific Kitten
+Currently, NFTs can be filtered by list of categories (comma separated category id) and nft owner address.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+At least one filter must be specified (so, at least a category or at least the address). If both are specified, NFTs that fit both filters are returned (so it's AND logic here, not OR).
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+http "/nfts/filter categories==1,2 address==tz1"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "currentPage": 1,
+    "numberOfPages": 2,
+    "nfts": [
+        {
+            "id": 1,
+            "name": "SomeNFT",
+            "tokenId": null,
+            "contract": null,
+            "ipfsHash": "ipfs://somenft",
+            "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
+            "metadata": {
+                "json": "encoded"
+            },
+            "categories": [
+                {
+                    "name": "mountains",
+                    "description": "steep hills that go heigh"
+                }
+            ]
+        }
+    ]
 }
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint retrieves all kittens.
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+### HTTP Request
+
+`GET /nfts/filter`
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+categories | undefined | Filter by comma separated list of categories identifiers (eg: `1,4,10`). Multiple entries here means: find NFTs that belong to at least one of the given categories.
+address | undefined | Get NFTs that are owned by some tezos address.
+page | 1 | Paginate through results, first page is 1.
+pageSize | 10 | Number of NFTs to fit on a single page
+firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
+
+## Get a Specific NFT
+
+```shell
+http "/nfts/:id"
+```
+> replace `:id` with an NFT id
+
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "name": "NFT2",
+    "id": 2,
+    "tokenId": null,
+    "contract": null,
+    "ipfsHash": "ipfs://somenft+",
+    "dataUri": "https://d-art.mypinata.cloud/ipfs/QmYjTQiHo4imnccru6Ucsv1MwFLgtHTA1NzXYeZZPPTvq1",
+    "metadata": {
+        "I": "guess?",
+        "json": "encoded"
+    },
+    "categories": [
+        {
+            "description": "its not actually blue",
+            "name": "water"
+        }
+    ]
+}
+```
 
 ### HTTP Request
 
