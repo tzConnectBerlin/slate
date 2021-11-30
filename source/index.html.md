@@ -101,6 +101,8 @@ Parameter | Default | Description
 page | 1 | Paginate through results, first page is 1
 pageSize | 10 | Number of NFTs to fit on a single page
 firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
+orderBy | 'id' | must be one of ['id', 'price', 'name', 'views'].
+order | 'asc' | must be one of ['asc', 'desc'].
 
 ## Get NFTs filtered
 
@@ -155,6 +157,8 @@ address | undefined | Get NFTs that are owned by some tezos address.
 page | 1 | Paginate through results, first page is 1.
 pageSize | 10 | Number of NFTs to fit on a single page
 firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
+orderBy | 'id' | must be one of ['id', 'price', 'name', 'views'].
+order | 'asc' | must be one of ['asc', 'desc'].
 
 ## Get a Specific NFT
 
