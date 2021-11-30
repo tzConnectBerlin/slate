@@ -464,6 +464,16 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>undefined</td>
 <td>In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.</td>
 </tr>
+<tr>
+<td>orderBy</td>
+<td>&#39;id&#39;</td>
+<td>must be one of [&#39;id&#39;, &#39;price&#39;, &#39;name&#39;, &#39;views&#39;].</td>
+</tr>
+<tr>
+<td>order</td>
+<td>&#39;asc&#39;</td>
+<td>must be one of [&#39;asc&#39;, &#39;desc&#39;].</td>
+</tr>
 </tbody></table>
 <h2 id='get-nfts-filtered'>Get NFTs filtered</h2>
 <p>Currently, NFTs can be filtered by:
@@ -533,6 +543,16 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>firstRequestAt</td>
 <td>undefined</td>
 <td>In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.</td>
+</tr>
+<tr>
+<td>orderBy</td>
+<td>&#39;id&#39;</td>
+<td>must be one of [&#39;id&#39;, &#39;price&#39;, &#39;name&#39;, &#39;views&#39;].</td>
+</tr>
+<tr>
+<td>order</td>
+<td>&#39;asc&#39;</td>
+<td>must be one of [&#39;asc&#39;, &#39;desc&#39;].</td>
 </tr>
 </tbody></table>
 <h2 id='get-a-specific-nft'>Get a Specific NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/2"</span>
