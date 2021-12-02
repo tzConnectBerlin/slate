@@ -355,6 +355,20 @@
               </ul>
           </li>
           <li>
+            <a href="#user-profile" class="toc-h1 toc-link" data-title="User profile">User profile</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-profile" class="toc-h2 toc-link" data-title="Get profile">Get profile</a>
+                  </li>
+                  <li>
+                    <a href="#edit-profile" class="toc-h2 toc-link" data-title="Edit profile">Edit profile</a>
+                  </li>
+                  <li>
+                    <a href="#check-validity-of-username-edit" class="toc-h2 toc-link" data-title="Check validity of username edit">Check validity of username edit</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#cart" class="toc-h1 toc-link" data-title="Cart">Cart</a>
               <ul class="toc-list-h2">
                   <li>
@@ -428,7 +442,7 @@ You must replace <code>$access_token</code> with your personal API key.
 
 <p>If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).</p>
 
-<p>The return includes additional general :</p>
+<p>The return includes additional general info:</p>
 
 <ul>
 <li><code>currentPage</code> (simply reflects the requested <code>page</code>)</li>
@@ -474,7 +488,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request'>HTTP Request</h3>
 <p><code>GET /nfts</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
+<h3 id='query-parameters'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -586,7 +600,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-2'>HTTP Request</h3>
 <p><code>GET /nfts/search</code></p>
-<h3 id='query-parameters-2'>Query Parameters</h3>
+<h3 id='query-parameters-2'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -632,7 +646,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST /nfts/:id</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
+<h3 id='url-parameters'>URL parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -755,21 +769,103 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-7'>HTTP Request</h3>
 <p><code>GET /auth/logged_user</code></p>
+<h1 id='user-profile'>User profile</h1><h2 id='get-profile'>Get profile</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile"</span> <span class="nv">userAddress</span><span class="o">==</span>tz1
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"nftCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638452668</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"profilePicture"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://some-url (eg may be AWS S3 hosted)"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"roles"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tz1"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test user"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-8'>HTTP Request</h3>
+<p><code>GET /users/profile</code></p>
+<h3 id='query-parameters-3'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userAddress</td>
+<td>tezos address (optional, if undefined the endpoint returns currently logged in user if logged in).</td>
+</tr>
+</tbody></table>
+<h2 id='edit-profile'>Edit profile</h2>
+<p>Edit:</p>
+
+<ul>
+<li>username (leave undefined if not to be changed)</li>
+<li>profile picture (leave undefined if not to be changed)</li>
+</ul>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="nt">-f</span> POST <span class="s2">"/users/profile/edit"</span> profilePicture@./tg_image_775116946.jpeg <span class="nv">userName</span><span class="o">=</span><span class="nb">test</span>
+</code></pre></div>
+<blockquote>
+<p>The above command only returns status code (201 on success), no body</p>
+</blockquote>
+<h3 id='http-request-9'>HTTP Request</h3>
+<p><code>POST /users/profile/edit (form, content-type: multipart/form-data)</code></p>
+<h3 id='body-parameters-3'>Body parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userName</td>
+<td>change username</td>
+</tr>
+</tbody></table>
+<h2 id='check-validity-of-username-edit'>Check validity of username edit</h2>
+<p>Note: must be logged in.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile/edit/check"</span> <span class="nv">userName</span><span class="o">==</span><span class="nb">test</span>
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"available"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-10'>HTTP Request</h3>
+<p><code>GET /users/profile/edit/check</code></p>
+<h3 id='query-parameters-4'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userName</td>
+<td>username to check availability for</td>
+</tr>
+</tbody></table>
 <h1 id='cart'>Cart</h1>
 <p>All endpoints related to shopping cart management.</p>
 
 <p>A cart session is either derived from the cookie session (when not logged in)
 or from the cart session that is connected to the logged in user. When logging
-in after having done some cart operations on the cookie session, the user (if
-not already connected to another cart session) is connected to the cookie based
-cart session. From thereon this cart session stays connected to this user until
-either it is checked out by the user, or it expires.</p>
+in after having done some cart operations on the cookie session, the user is
+connected to the cookie based cart session. From thereon this cart session
+stays connected to this user until either it is checked out by the user, or it
+expires. If the user was already connected to some other active cart session,
+it is terminated.</p>
 
 <p>The only endpoint that requires being logged in is the checkout endpoint.</p>
 
 <p>Every cart session has an expiration date. Currently this is 30 minutes after
-the last POST action (add, remove).</p>
-<h2 id='list-nfts-in-the-cart'>List NFTs in the cart</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/cart/list"</span>
+the last POST action (add, remove, list).</p>
+<h2 id='list-nfts-in-the-cart'>List NFTs in the cart</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/list"</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -796,8 +892,8 @@ the last POST action (add, remove).</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-8'>HTTP Request</h3>
-<p><code>GET /users/cart/list</code></p>
+</span></code></pre></div><h3 id='http-request-11'>HTTP Request</h3>
+<p><code>POST /users/cart/list</code></p>
 <h2 id='add-nft'>Add NFT</h2>
 <p>Note, this may fail if</p>
 
@@ -807,9 +903,9 @@ the last POST action (add, remove).</p>
 <li>This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</li>
 </ul>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/add/2"</span>
-</code></pre></div><h3 id='http-request-9'>HTTP Request</h3>
+</code></pre></div><h3 id='http-request-12'>HTTP Request</h3>
 <p><code>POST /users/cart/add/:id</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<h3 id='url-parameters-2'>URL parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -822,9 +918,9 @@ the last POST action (add, remove).</p>
 </tr>
 </tbody></table>
 <h2 id='remove-nft'>Remove NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/remove/2"</span>
-</code></pre></div><h3 id='http-request-10'>HTTP Request</h3>
+</code></pre></div><h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /users/cart/remove/:id</code></p>
-<h3 id='url-parameters-3'>URL Parameters</h3>
+<h3 id='url-parameters-3'>URL parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -840,7 +936,7 @@ the last POST action (add, remove).</p>
 <p>Placeholder: for now, all NFTs in the cart are immediately assigned to the
 user, without any sort of payment / minting.</p>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/checkout"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
-</code></pre></div><h3 id='http-request-11'>HTTP Request</h3>
+</code></pre></div><h3 id='http-request-14'>HTTP Request</h3>
 <p><code>POST /users/cart/checkout</code></p>
 <h1 id='errors'>Errors</h1>
 <p>-</p>
