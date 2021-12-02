@@ -33,7 +33,7 @@ Endpoints that require a logged in user expect a valid token in the Authorizatio
 # Login, and get an access token:
 http POST "/auth/login" <<EOF
 {
-    "address": "$user_address",
+    "userAddress": "$user_address",
     "signedPayload": "$user_password",
 }
 EOF
@@ -56,7 +56,23 @@ For more info see the "Users auth" section.
 
 # NFTs
 
-## Get all NFTs
+## Get NFTs (optionally with filters)
+
+Optionally, a set of filters can be specified. NFTs can be filtered by:
+- List of categories (comma separated category id)
+- NFT owner address
+- Price at least
+- Price at most
+- Availability (on sale / sold out / drop upcoming)
+
+For each filter, if not specified, it's not applied (so, for example, if no availability is specified, NFTs of all availability status' are returned).
+
+If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).
+
+The return includes additional general :
+- `currentPage` (simply reflects the requested `page`)
+- `numberOfPages` (takes into account the selected filters and `pageSize`)
+- `lowerPriceBound` and `upperPriceBound` (takes into account the selected filters, except for the price filters)
 
 ```shell
 http "/nfts"
@@ -68,12 +84,20 @@ http "/nfts"
 {
     "currentPage": 1,
     "numberOfPages": 4,
+    "lowerPriceBound": 11,
+    "upperPriceBound": 104,
     "nfts": [
         {
             "id": 1,
-            "name": "SomeNFT",
+            "name": "Some NFT",
+            "description": null,
             "tokenId": null,
             "contract": null,
+            "createdAt": 1638439715,
+            "launchAt": 1638439715,
+            "price": 14,
+            "editionsSize": 2,
+            "editionsAvailable": 0,
             "ipfsHash": "ipfs://somenft",
             "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
             "metadata": {
@@ -81,6 +105,7 @@ http "/nfts"
             },
             "categories": [
                 {
+                    "id": 1,
                     "name": "mountains",
                     "description": "steep hills that go heigh"
                 }
@@ -100,45 +125,64 @@ Parameter | Default | Description
 --------- | ------- | -----------
 page | 1 | Paginate through results, first page is 1
 pageSize | 10 | Number of NFTs to fit on a single page
+orderBy | 'id' | must be one of ['id', 'createdAt', 'price', 'name', 'views'].
+orderDirection | 'asc' | must be one of ['asc', 'desc'].
+categories | undefined | Get NFTs that belong to any of a comma separated set of category identifiers (eg: `1,4,10`). Multiple entries here means: find NFTs that belong to at least one of the given categories.
+userAddress | undefined | Get NFTs that are owned by some tezos address.
+availability | undefined | Comma separated enable-list of availability status (each entry being one of `'onSale','soldOut','upcoming'`). Multiple entries means find NFTs that belong to one of the entries.
+priceAtLeast | undefined | Get NFTs that at least cost `x` amount (`x` is inclusive).
+priceAtMost | undefined | Get NFTs that at most cost `x` amount (`x` is inclusive).
 firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
-orderBy | 'id' | must be one of ['id', 'price', 'name', 'views'].
-order | 'asc' | must be one of ['asc', 'desc'].
 
-## Get NFTs filtered
 
-Currently, NFTs can be filtered by:
-- list of categories (comma separated category id)
-- NFT owner address.
+## Search NFTs
 
-At least one filter must be specified (so, at least a category or at least the address). If both are specified, NFTs that fit both filters are returned (so it's AND logic here, not OR).
+This searches for:
+- NFTs by name and description
+- For categories by name
+
+Currently returns a maximum of 3 NFTs and a maximum of 5 categories, sorted by most relevant first.
 
 ```shell
-http "/nfts/filter" categories==1,2 address==tz1
+http "/nfts/search" searchString=='rock'
 ```
-
 > The above command returns JSON structured like this:
 
 ```json
+
 {
-    "currentPage": 1,
-    "numberOfPages": 2,
+    "categories": [
+        {
+            "id": 2,
+            "name": "rock n roll",
+            "description": "guitar music"
+        }
+	],
     "nfts": [
         {
-            "id": 1,
-            "name": "SomeNFT",
-            "tokenId": null,
-            "contract": null,
-            "ipfsHash": "ipfs://somenft",
-            "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
-            "metadata": {
-                "json": "encoded"
-            },
+            "name": "rocky",
+            "description": "its something",
             "categories": [
                 {
-                    "name": "mountains",
-                    "description": "steep hills that go heigh"
+                    "description": "steep hills that go heigh",
+                    "id": 1,
+                    "name": "mountains"
                 }
-            ]
+            ],
+            "contract": null,
+            "createdAt": 1638448715,
+            "dataUri": null,
+            "editionsAvailable": 0,
+            "editionsSize": 1,
+            "id": 1,
+            "ipfsHash": "ipfs://somenft",
+            "launchAt": 1638448715,
+            "metadata": {
+                "I": "guess?",
+                "json": "encoded"
+            },
+            "price": 1,
+            "tokenId": null
         }
     ]
 }
@@ -146,53 +190,56 @@ http "/nfts/filter" categories==1,2 address==tz1
 
 ### HTTP Request
 
-`GET /nfts/filter`
+`GET /nfts/search`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-categories | undefined | Get NFTs that belong to any of a comma separated set of category identifiers (eg: `1,4,10`). Multiple entries here means: find NFTs that belong to at least one of the given categories.
-address | undefined | Get NFTs that are owned by some tezos address.
-page | 1 | Paginate through results, first page is 1.
-pageSize | 10 | Number of NFTs to fit on a single page
-firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
-orderBy | 'id' | must be one of ['id', 'price', 'name', 'views'].
-order | 'asc' | must be one of ['asc', 'desc'].
+Parameter | Description
+--------- | -----------
+searchString | The text to search for
 
-## Get a Specific NFT
+
+## Get a specific NFT
+
+Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting `/nfts` on number of views.
 
 ```shell
-http "/nfts/2"
+http POST "/nfts/2"
 ```
-> replace `2` with any NFT id
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-    "name": "NFT2",
     "id": 2,
-    "tokenId": null,
+    "name": "rocky",
+    "description": "its something",
+    "categories": [
+        {
+            "description": "steep hills that go heigh",
+            "id": 1,
+            "name": "mountains"
+        }
+    ],
     "contract": null,
-    "ipfsHash": "ipfs://somenft+",
-    "dataUri": "https://d-art.mypinata.cloud/ipfs/QmYjTQiHo4imnccru6Ucsv1MwFLgtHTA1NzXYeZZPPTvq1",
+    "createdAt": 1638448715,
+    "dataUri": null,
+    "editionsAvailable": 0,
+    "editionsSize": 1,
+    "ipfsHash": "ipfs://somenft",
+    "launchAt": 1638448715,
     "metadata": {
         "I": "guess?",
         "json": "encoded"
     },
-    "categories": [
-        {
-            "description": "its not actually blue",
-            "name": "water"
-        }
-    ]
+    "price": 1,
+    "tokenId": null
 }
 ```
 
 ### HTTP Request
 
-`GET /nfts/:id`
+`POST /nfts/:id`
 
 ### URL Parameters
 
@@ -254,7 +301,7 @@ http "/categories"
 ```shell
 http POST "/auth/register" <<EOF
 {
-    "address": "$user_address",
+    "userAddress": "$user_address",
     "signedPayload": "$user_password"
 }
 EOF
@@ -268,7 +315,7 @@ EOF
 
 Parameter | Description
 --------- | -----------
-address | tezos address
+userAddress | tezos address
 signedPayload | password
 name | username (currently it's optional)
 
@@ -277,7 +324,7 @@ name | username (currently it's optional)
 ```shell
 http POST "/auth/login" <<EOF
 {
-    "address": "$user_address",
+    "userAddress": "$user_address",
     "signedPayload": "$user_password"
 }
 EOF
@@ -287,7 +334,7 @@ EOF
 
 ```json
 {
-    "address": "addr",
+    "userAddress": "addr",
     "id": 1,
     "maxAge": "86400000",
     "name": null,
@@ -303,7 +350,7 @@ EOF
 
 Parameter | Description
 --------- | -----------
-address | tezos address
+userAddress | tezos address
 signedPayload | password
 
 ## Logged in user
@@ -316,7 +363,7 @@ http "/auth/logged_user" Authorization:"Bearer $access_token"
 
 ```json
 {
-    "address": "addr",
+    "userAddress": "addr",
     "id": 1,
     "name": null,
     "roles": []
