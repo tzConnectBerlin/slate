@@ -322,13 +322,13 @@
             <a href="#nfts" class="toc-h1 toc-link" data-title="NFTs">NFTs</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-nfts" class="toc-h2 toc-link" data-title="Get all NFTs">Get all NFTs</a>
+                    <a href="#get-nfts-optionally-with-filters" class="toc-h2 toc-link" data-title="Get NFTs (optionally with filters)">Get NFTs (optionally with filters)</a>
                   </li>
                   <li>
-                    <a href="#get-nfts-filtered" class="toc-h2 toc-link" data-title="Get NFTs filtered">Get NFTs filtered</a>
+                    <a href="#search-nfts" class="toc-h2 toc-link" data-title="Search NFTs">Search NFTs</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-nft" class="toc-h2 toc-link" data-title="Get a Specific NFT">Get a Specific NFT</a>
+                    <a href="#get-a-specific-nft" class="toc-h2 toc-link" data-title="Get a specific NFT">Get a specific NFT</a>
                   </li>
               </ul>
           </li>
@@ -391,7 +391,7 @@
 <div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Login, and get an access token:</span>
 http POST <span class="s2">"/auth/login"</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
 {
-    "address": "</span><span class="nv">$user_address</span><span class="sh">",
+    "userAddress": "</span><span class="nv">$user_address</span><span class="sh">",
     "signedPayload": "</span><span class="nv">$user_password</span><span class="sh">",
 }
 </span><span class="no">EOF
@@ -411,7 +411,23 @@ You must replace <code>$access_token</code> with your personal API key.
 </aside>
 
 <p>For more info see the &quot;Users auth&quot; section.</p>
-<h1 id='nfts'>NFTs</h1><h2 id='get-all-nfts'>Get all NFTs</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts"</span>
+<h1 id='nfts'>NFTs</h1><h2 id='get-nfts-optionally-with-filters'>Get NFTs (optionally with filters)</h2>
+<p>Optionally, a set of filters can be specified. NFTs can be filtered by:
+- List of categories (comma separated category id)
+- NFT owner address
+- Price at least
+- Price at most
+- Availability (on sale / sold out / drop upcoming)</p>
+
+<p>For each filter, if not specified, it&#39;s not applied (so, for example, if no availability is specified, NFTs of all availability status&#39; are returned).</p>
+
+<p>If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).</p>
+
+<p>The return includes additional general :
+- <code>currentPage</code> (simply reflects the requested <code>page</code>)
+- <code>numberOfPages</code> (takes into account the selected filters and <code>pageSize</code>)
+- <code>lowerPriceBound</code> and <code>upperPriceBound</code> (takes into account the selected filters, except for the price filters)</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts"</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -419,12 +435,20 @@ You must replace <code>$access_token</code> with your personal API key.
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"currentPage"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="nl">"numberOfPages"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"lowerPriceBound"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"upperPriceBound"</span><span class="p">:</span><span class="w"> </span><span class="mi">104</span><span class="p">,</span><span class="w">
     </span><span class="nl">"nfts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeNFT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Some NFT"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
             </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
             </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638439715</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"launchAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638439715</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"editionsSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"editionsAvailable"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
             </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -432,6 +456,7 @@ You must replace <code>$access_token</code> with your personal API key.
             </span><span class="p">},</span><span class="w">
             </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
                 </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
                     </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="p">,</span><span class="w">
                     </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
@@ -460,128 +485,142 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>Number of NFTs to fit on a single page</td>
 </tr>
 <tr>
-<td>firstRequestAt</td>
-<td>undefined</td>
-<td>In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.</td>
-</tr>
-<tr>
 <td>orderBy</td>
 <td>&#39;id&#39;</td>
-<td>must be one of [&#39;id&#39;, &#39;price&#39;, &#39;name&#39;, &#39;views&#39;].</td>
+<td>must be one of [&#39;id&#39;, &#39;createdAt&#39;, &#39;price&#39;, &#39;name&#39;, &#39;views&#39;].</td>
 </tr>
 <tr>
-<td>order</td>
+<td>orderDirection</td>
 <td>&#39;asc&#39;</td>
 <td>must be one of [&#39;asc&#39;, &#39;desc&#39;].</td>
 </tr>
-</tbody></table>
-<h2 id='get-nfts-filtered'>Get NFTs filtered</h2>
-<p>Currently, NFTs can be filtered by:
-- list of categories (comma separated category id)
-- NFT owner address.</p>
-
-<p>At least one filter must be specified (so, at least a category or at least the address). If both are specified, NFTs that fit both filters are returned (so it&#39;s AND logic here, not OR).</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/filter"</span> <span class="nv">categories</span><span class="o">==</span>1,2 <span class="nv">address</span><span class="o">==</span>tz1
-</code></pre></div>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"currentPage"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"numberOfPages"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"nfts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeNFT"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"encoded"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                </span><span class="p">{</span><span class="w">
-                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="p">,</span><span class="w">
-                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="w">
-                </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /nfts/filter</code></p>
-<h3 id='query-parameters-2'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
 <tr>
 <td>categories</td>
 <td>undefined</td>
 <td>Get NFTs that belong to any of a comma separated set of category identifiers (eg: <code>1,4,10</code>). Multiple entries here means: find NFTs that belong to at least one of the given categories.</td>
 </tr>
 <tr>
-<td>address</td>
+<td>userAddress</td>
 <td>undefined</td>
 <td>Get NFTs that are owned by some tezos address.</td>
 </tr>
 <tr>
-<td>page</td>
-<td>1</td>
-<td>Paginate through results, first page is 1.</td>
+<td>availability</td>
+<td>undefined</td>
+<td>Comma separated enable-list of availability status (each entry being one of <code>&#39;onSale&#39;,&#39;soldOut&#39;,&#39;upcoming&#39;</code>). Multiple entries means find NFTs that belong to one of the entries.</td>
 </tr>
 <tr>
-<td>pageSize</td>
-<td>10</td>
-<td>Number of NFTs to fit on a single page</td>
+<td>priceAtLeast</td>
+<td>undefined</td>
+<td>Get NFTs that at least cost <code>x</code> amount (<code>x</code> is inclusive).</td>
+</tr>
+<tr>
+<td>priceAtMost</td>
+<td>undefined</td>
+<td>Get NFTs that at most cost <code>x</code> amount (<code>x</code> is inclusive).</td>
 </tr>
 <tr>
 <td>firstRequestAt</td>
 <td>undefined</td>
 <td>In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.</td>
 </tr>
-<tr>
-<td>orderBy</td>
-<td>&#39;id&#39;</td>
-<td>must be one of [&#39;id&#39;, &#39;price&#39;, &#39;name&#39;, &#39;views&#39;].</td>
-</tr>
-<tr>
-<td>order</td>
-<td>&#39;asc&#39;</td>
-<td>must be one of [&#39;asc&#39;, &#39;desc&#39;].</td>
-</tr>
 </tbody></table>
-<h2 id='get-a-specific-nft'>Get a Specific NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/2"</span>
+<h2 id='search-nfts'>Search NFTs</h2>
+<p>This searches for:
+- NFTs by name and description
+- For categories by name</p>
+
+<p>Currently returns a maximum of 3 NFTs and a maximum of 5 categories, sorted by most relevant first.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/search"</span> <span class="nv">searchString</span><span class="o">==</span><span class="s1">'rock'</span>
 </code></pre></div>
 <blockquote>
-<p>replace <code>2</code> with any NFT id</p>
-
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rock n roll"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guitar music"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"nfts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rocky"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"its something"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638448715</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"editionsAvailable"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"editionsSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"launchAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638448715</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"I"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guess?"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"encoded"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET /nfts/search</code></p>
+<h3 id='query-parameters-2'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>searchString</td>
+<td>The text to search for</td>
+</tr>
+</tbody></table>
+<h2 id='get-a-specific-nft'>Get a specific NFT</h2>
+<p>Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting <code>/nfts</code> on number of views.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/nfts/2"</span>
+</code></pre></div>
+<blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NFT2"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rocky"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"its something"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
     </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft+"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://d-art.mypinata.cloud/ipfs/QmYjTQiHo4imnccru6Ucsv1MwFLgtHTA1NzXYeZZPPTvq1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638448715</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"editionsAvailable"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"editionsSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"launchAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638448715</span><span class="p">,</span><span class="w">
     </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nl">"I"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guess?"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"encoded"</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"its not actually blue"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"water"</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET /nfts/:id</code></p>
+<p><code>POST /nfts/:id</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
 <tr>
@@ -631,7 +670,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <p><code>GET /categories</code></p>
 <h1 id='users-auth'>Users auth</h1><h2 id='create-account'>Create account</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/auth/register"</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
 {
-    "address": "</span><span class="nv">$user_address</span><span class="sh">",
+    "userAddress": "</span><span class="nv">$user_address</span><span class="sh">",
     "signedPayload": "</span><span class="nv">$user_password</span><span class="sh">"
 }
 </span><span class="no">EOF
@@ -645,7 +684,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </tr>
 </thead><tbody>
 <tr>
-<td>address</td>
+<td>userAddress</td>
 <td>tezos address</td>
 </tr>
 <tr>
@@ -659,7 +698,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </tbody></table>
 <h2 id='login'>Login</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/auth/login"</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
 {
-    "address": "</span><span class="nv">$user_address</span><span class="sh">",
+    "userAddress": "</span><span class="nv">$user_address</span><span class="sh">",
     "signedPayload": "</span><span class="nv">$user_password</span><span class="sh">"
 }
 </span><span class="no">EOF
@@ -668,7 +707,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addr"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addr"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="nl">"maxAge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"86400000"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
@@ -684,7 +723,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </tr>
 </thead><tbody>
 <tr>
-<td>address</td>
+<td>userAddress</td>
 <td>tezos address</td>
 </tr>
 <tr>
@@ -698,7 +737,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addr"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addr"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
     </span><span class="nl">"roles"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
