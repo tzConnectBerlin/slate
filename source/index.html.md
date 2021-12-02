@@ -72,7 +72,7 @@ For each filter, if not specified, it's not applied (so, for example, if no avai
 
 If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).
 
-The return includes additional general :
+The return includes additional general info:
 
 - `currentPage` (simply reflects the requested `page`)
 - `numberOfPages` (takes into account the selected filters and `pageSize`)
@@ -123,7 +123,7 @@ http "/nfts"
 
 `GET /nfts`
 
-### Query Parameters
+### Query parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
@@ -197,7 +197,7 @@ http "/nfts/search" searchString=='rock'
 
 `GET /nfts/search`
 
-### Query Parameters
+### Query parameters
 
 Parameter | Description
 --------- | -----------
@@ -246,7 +246,7 @@ http POST "/nfts/2"
 
 `POST /nfts/:id`
 
-### URL Parameters
+### URL parameters
 
 Parameter | Description
 --------- | -----------
@@ -379,26 +379,112 @@ http "/auth/logged_user" Authorization:"Bearer $access_token"
 
 `GET /auth/logged_user`
 
+# User profile
+
+## Get profile
+
+```shell
+http "/users/profile" userAddress==tz1
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "nftCount": 2,
+    "user": {
+        "createdAt": 1638452668,
+        "id": 2,
+        "profilePicture": "https://some-url (eg may be AWS S3 hosted)",
+        "roles": [],
+        "userAddress": "tz1",
+        "userName": "test user"
+    }
+}
+```
+
+### HTTP Request
+
+`GET /users/profile`
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+userAddress | tezos address (optional, if undefined the endpoint returns currently logged in user if logged in).
+
+## Edit profile
+
+Edit:
+
+- username (leave undefined if not to be changed)
+- profile picture (leave undefined if not to be changed)
+
+```shell
+http -f POST "/users/profile/edit" profilePicture@./tg_image_775116946.jpeg userName=test
+```
+
+> The above command only returns status code (201 on success), no body
+
+### HTTP Request
+
+`POST /users/profile/edit (form, content-type: multipart/form-data)`
+
+### Body parameters
+
+Parameter | Description
+--------- | -----------
+userName | change username
+
+## Check validity of username edit
+
+Note: must be logged in.
+
+```shell
+http "/users/profile/edit/check" userName==test
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "available": true,
+    "userName": "test"
+}
+```
+
+### HTTP Request
+
+`GET /users/profile/edit/check`
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+userName | username to check availability for
+
+
 # Cart
 
 All endpoints related to shopping cart management.
 
 A cart session is either derived from the cookie session (when not logged in)
 or from the cart session that is connected to the logged in user. When logging
-in after having done some cart operations on the cookie session, the user (if
-not already connected to another cart session) is connected to the cookie based
-cart session. From thereon this cart session stays connected to this user until
-either it is checked out by the user, or it expires.
+in after having done some cart operations on the cookie session, the user is
+connected to the cookie based cart session. From thereon this cart session
+stays connected to this user until either it is checked out by the user, or it
+expires. If the user was already connected to some other active cart session,
+it is terminated.
 
 The only endpoint that requires being logged in is the checkout endpoint.
 
 Every cart session has an expiration date. Currently this is 30 minutes after
-the last POST action (add, remove).
+the last POST action (add, remove, list).
 
 ## List NFTs in the cart
 
 ```shell
-http "/users/cart/list"
+http POST "/users/cart/list"
 ```
 
 > The above command returns JSON structured like this:
@@ -430,7 +516,7 @@ http "/users/cart/list"
 
 ### HTTP Request
 
-`GET /users/cart/list`
+`POST /users/cart/list`
 
 
 ## Add NFT
@@ -449,7 +535,7 @@ http POST "/users/cart/add/2"
 
 `POST /users/cart/add/:id`
 
-### URL Parameters
+### URL parameters
 
 Parameter | Description
 --------- | -----------
@@ -465,7 +551,7 @@ http POST "/users/cart/remove/2"
 
 `POST /users/cart/remove/:id`
 
-### URL Parameters
+### URL parameters
 
 Parameter | Description
 --------- | -----------
