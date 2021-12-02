@@ -58,26 +58,6 @@ For more info see the "Users auth" section.
 
 ## Get NFTs (optionally with filters)
 
-Results are paginated.
-
-Optionally, a set of filters can be specified. NFTs can be filtered by:
-
-- List of categories (comma separated category id)
-- NFT owner address
-- Price at least
-- Price at most
-- Availability (on sale / sold out / drop upcoming)
-
-For each filter, if not specified, it's not applied (so, for example, if no availability is specified, NFTs of all availability status' are returned).
-
-If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).
-
-The return includes additional general info:
-
-- `currentPage` (simply reflects the requested `page`)
-- `numberOfPages` (takes into account the selected filters and `pageSize`)
-- `lowerPriceBound` and `upperPriceBound` (takes into account the selected filters, except for the price filters)
-
 ```shell
 http "/nfts"
 ```
@@ -119,6 +99,26 @@ http "/nfts"
 }
 ```
 
+Results are paginated.
+
+Optionally, a set of filters can be specified. NFTs can be filtered by:
+
+- List of categories (comma separated category id)
+- NFT owner address
+- Price at least
+- Price at most
+- Availability (on sale / sold out / drop upcoming)
+
+For each filter, if not specified, it's not applied (so, for example, if no availability is specified, NFTs of all availability status' are returned).
+
+If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).
+
+The return includes additional general info:
+
+- `currentPage` (simply reflects the requested `page`)
+- `numberOfPages` (takes into account the selected filters and `pageSize`)
+- `lowerPriceBound` and `upperPriceBound` (takes into account the selected filters, except for the price filters)
+
 ### HTTP Request
 
 `GET /nfts`
@@ -140,13 +140,6 @@ firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagin
 
 
 ## Search NFTs
-
-This searches for:
-
-- NFTs by name and description
-- For categories by name
-
-Currently returns a maximum of 3 NFTs and a maximum of 5 categories, sorted by most relevant first.
 
 ```shell
 http "/nfts/search" searchString=='rock'
@@ -193,6 +186,13 @@ http "/nfts/search" searchString=='rock'
 }
 ```
 
+This searches for:
+
+- NFTs by name and description
+- For categories by name
+
+Currently returns a maximum of 3 NFTs and a maximum of 5 categories, sorted by most relevant first.
+
 ### HTTP Request
 
 `GET /nfts/search`
@@ -205,8 +205,6 @@ searchString | The text to search for
 
 
 ## Get a specific NFT
-
-Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting `/nfts` on number of views.
 
 ```shell
 http POST "/nfts/2"
@@ -241,6 +239,8 @@ http POST "/nfts/2"
     "tokenId": null
 }
 ```
+
+Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting `/nfts` on number of views.
 
 ### HTTP Request
 
@@ -438,8 +438,6 @@ userName | change username
 
 ## Check validity of username edit
 
-Note: must be logged in.
-
 ```shell
 http "/users/profile/edit/check" userName==test
 ```
@@ -452,6 +450,8 @@ http "/users/profile/edit/check" userName==test
     "userName": "test"
 }
 ```
+
+Note: must be logged in.
 
 ### HTTP Request
 
