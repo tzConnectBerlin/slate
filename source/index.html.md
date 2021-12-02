@@ -58,7 +58,10 @@ For more info see the "Users auth" section.
 
 ## Get NFTs (optionally with filters)
 
+Results are paginated.
+
 Optionally, a set of filters can be specified. NFTs can be filtered by:
+
 - List of categories (comma separated category id)
 - NFT owner address
 - Price at least
@@ -70,6 +73,7 @@ For each filter, if not specified, it's not applied (so, for example, if no avai
 If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).
 
 The return includes additional general :
+
 - `currentPage` (simply reflects the requested `page`)
 - `numberOfPages` (takes into account the selected filters and `pageSize`)
 - `lowerPriceBound` and `upperPriceBound` (takes into account the selected filters, except for the price filters)
@@ -138,6 +142,7 @@ firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagin
 ## Search NFTs
 
 This searches for:
+
 - NFTs by name and description
 - For categories by name
 
@@ -317,7 +322,7 @@ Parameter | Description
 --------- | -----------
 userAddress | tezos address
 signedPayload | password
-name | username (currently it's optional)
+userName | username (currently it's optional)
 
 ## Login
 
@@ -337,7 +342,7 @@ EOF
     "userAddress": "addr",
     "id": 1,
     "maxAge": "86400000",
-    "name": null,
+    "userName": null,
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6bnVsbCwiYWRkcmVzcyI6ImFkZHIiLCJyb2xlcyI6W10sImlhdCI6MTYzNzI0ODM5Nn0.HovGQYf8QaVh0ZEdLhYBzBYqqYTrH34j6MUDBw8Bb2M"
 }
 ```
@@ -365,7 +370,7 @@ http "/auth/logged_user" Authorization:"Bearer $access_token"
 {
     "userAddress": "addr",
     "id": 1,
-    "name": null,
+    "userName": null,
     "roles": []
 }
 ```
