@@ -425,31 +425,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </aside>
 
 <p>For more info see the &quot;Users auth&quot; section.</p>
-<h1 id='nfts'>NFTs</h1><h2 id='get-nfts-optionally-with-filters'>Get NFTs (optionally with filters)</h2>
-<p>Results are paginated.</p>
-
-<p>Optionally, a set of filters can be specified. NFTs can be filtered by:</p>
-
-<ul>
-<li>List of categories (comma separated category id)</li>
-<li>NFT owner address</li>
-<li>Price at least</li>
-<li>Price at most</li>
-<li>Availability (on sale / sold out / drop upcoming)</li>
-</ul>
-
-<p>For each filter, if not specified, it&#39;s not applied (so, for example, if no availability is specified, NFTs of all availability status&#39; are returned).</p>
-
-<p>If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).</p>
-
-<p>The return includes additional general info:</p>
-
-<ul>
-<li><code>currentPage</code> (simply reflects the requested <code>page</code>)</li>
-<li><code>numberOfPages</code> (takes into account the selected filters and <code>pageSize</code>)</li>
-<li><code>lowerPriceBound</code> and <code>upperPriceBound</code> (takes into account the selected filters, except for the price filters)</li>
-</ul>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts"</span>
+<h1 id='nfts'>NFTs</h1><h2 id='get-nfts-optionally-with-filters'>Get NFTs (optionally with filters)</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts"</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -486,7 +462,31 @@ You must replace <code>$access_token</code> with your personal API key.
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request'>HTTP Request</h3>
+</span></code></pre></div>
+<p>Results are paginated.</p>
+
+<p>Optionally, a set of filters can be specified. NFTs can be filtered by:</p>
+
+<ul>
+<li>List of categories (comma separated category id)</li>
+<li>NFT owner address</li>
+<li>Price at least</li>
+<li>Price at most</li>
+<li>Availability (on sale / sold out / drop upcoming)</li>
+</ul>
+
+<p>For each filter, if not specified, it&#39;s not applied (so, for example, if no availability is specified, NFTs of all availability status&#39; are returned).</p>
+
+<p>If multiple filters are specified, NFTs that fit each criteria are returned (AND logic, not OR).</p>
+
+<p>The return includes additional general info:</p>
+
+<ul>
+<li><code>currentPage</code> (simply reflects the requested <code>page</code>)</li>
+<li><code>numberOfPages</code> (takes into account the selected filters and <code>pageSize</code>)</li>
+<li><code>lowerPriceBound</code> and <code>upperPriceBound</code> (takes into account the selected filters, except for the price filters)</li>
+</ul>
+<h3 id='http-request'>HTTP Request</h3>
 <p><code>GET /nfts</code></p>
 <h3 id='query-parameters'>Query parameters</h3>
 <table><thead>
@@ -547,16 +547,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.</td>
 </tr>
 </tbody></table>
-<h2 id='search-nfts'>Search NFTs</h2>
-<p>This searches for:</p>
-
-<ul>
-<li>NFTs by name and description</li>
-<li>For categories by name</li>
-</ul>
-
-<p>Currently returns a maximum of 3 NFTs and a maximum of 5 categories, sorted by most relevant first.</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/search"</span> <span class="nv">searchString</span><span class="o">==</span><span class="s1">'rock'</span>
+<h2 id='search-nfts'>Search NFTs</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/search"</span> <span class="nv">searchString</span><span class="o">==</span><span class="s1">'rock'</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -598,7 +589,16 @@ You must replace <code>$access_token</code> with your personal API key.
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-2'>HTTP Request</h3>
+</span></code></pre></div>
+<p>This searches for:</p>
+
+<ul>
+<li>NFTs by name and description</li>
+<li>For categories by name</li>
+</ul>
+
+<p>Currently returns a maximum of 3 NFTs and a maximum of 5 categories, sorted by most relevant first.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
 <p><code>GET /nfts/search</code></p>
 <h3 id='query-parameters-2'>Query parameters</h3>
 <table><thead>
@@ -612,9 +612,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>The text to search for</td>
 </tr>
 </tbody></table>
-<h2 id='get-a-specific-nft'>Get a specific NFT</h2>
-<p>Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting <code>/nfts</code> on number of views.</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/nfts/2"</span>
+<h2 id='get-a-specific-nft'>Get a specific NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/nfts/2"</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -644,7 +642,9 @@ You must replace <code>$access_token</code> with your personal API key.
     </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-3'>HTTP Request</h3>
+</span></code></pre></div>
+<p>Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting <code>/nfts</code> on number of views.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST /nfts/:id</code></p>
 <h3 id='url-parameters'>URL parameters</h3>
 <table><thead>
@@ -825,9 +825,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>change username</td>
 </tr>
 </tbody></table>
-<h2 id='check-validity-of-username-edit'>Check validity of username edit</h2>
-<p>Note: must be logged in.</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile/edit/check"</span> <span class="nv">userName</span><span class="o">==</span><span class="nb">test</span>
+<h2 id='check-validity-of-username-edit'>Check validity of username edit</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile/edit/check"</span> <span class="nv">userName</span><span class="o">==</span><span class="nb">test</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -836,7 +834,9 @@ You must replace <code>$access_token</code> with your personal API key.
     </span><span class="nl">"available"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
     </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-10'>HTTP Request</h3>
+</span></code></pre></div>
+<p>Note: must be logged in.</p>
+<h3 id='http-request-10'>HTTP Request</h3>
 <p><code>GET /users/profile/edit/check</code></p>
 <h3 id='query-parameters-4'>Query parameters</h3>
 <table><thead>
