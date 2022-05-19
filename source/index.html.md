@@ -68,32 +68,29 @@ http "/nfts"
 {
     "currentPage": 1,
     "numberOfPages": 4,
-    "lowerPriceBound": 11,
-    "upperPriceBound": 104,
+    "lowerPriceBound": "1.12",
+    "upperPriceBound": "105.00",
     "nfts": [
         {
-            "id": 1,
-            "name": "Some NFT",
-            "description": null,
-            "tokenId": null,
-            "contract": null,
-            "createdAt": 1638439715,
-            "launchAt": 1638439715,
-            "price": 14,
-            "editionsSize": 2,
-            "editionsAvailable": 0,
-            "ipfsHash": "ipfs://somenft",
-            "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
-            "metadata": {
-                "json": "encoded"
-            },
+            "artifactUri": "https://kanvas-admin-files.s3.amazonaws.com/NFT_FILE__6_image.png",
             "categories": [
                 {
-                    "id": 1,
-                    "name": "mountains",
-                    "description": "steep hills that go heigh"
+                    "description": "Not actually visual",
+                    "id": 3,
+                    "name": "Applied Art"
                 }
-            ]
+            ],
+            "createdAt": 1645710471,
+            "description": "Nice for breakfast",
+            "displayUri": "https://kanvas-admin-files.s3.amazonaws.com/NFT_FILE__6_image.png",
+            "editionsAvailable": 0,
+            "editionsSize": 1,
+            "id": 6,
+            "ipfsHash": "ipfs://QmQx1zaVfbXk1JfPGhHo3pRaBgcHBzsHC1EVzXEkG2k1rz",
+            "launchAt": 1645743600,
+            "name": "baguette",
+            "price": "1.68",
+            "thumbnailUri": "https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__6_thumbnail.png"
         }
     ]
 }
@@ -103,11 +100,11 @@ Results are paginated.
 
 Optionally, a set of filters can be specified. NFTs can be filtered by:
 
-- List of categories (comma separated category id)
-- NFT owner address
-- Price at least
-- Price at most
-- Availability (on sale / sold out / drop upcoming)
+- `categories` (List of categories that is comma separated category id)
+- `userAddress` (NFT owner address)
+- `priceAtLeast`
+- `priceAtMost`
+- `availability` (comma separated inclusion list of: `onSale` / `soldOut` / `upcoming`)
 
 For each filter, if not specified, it's not applied (so, for example, if no availability is specified, NFTs of all availability status' are returned).
 
@@ -118,6 +115,8 @@ The return includes additional general info:
 - `currentPage` (simply reflects the requested `page`)
 - `numberOfPages` (takes into account the selected filters and `pageSize`)
 - `lowerPriceBound` and `upperPriceBound` (takes into account the selected filters, except for the price filters)
+
+`ipfsHash` may be `null` in the response. It's only set (not `null`) for NFTs that have already been purchased at least once. We do this to allow remaining uncommitted to the existence of an NFT for as long as possible, this'd be useful in case for some reason an NFT no longer is deemed appropriate and should be delisted. Note though that delisting is always possible, in the sense of blacklisting it from the store, however once the IPFS hash is shared and the NFT is minted on the blockchain, it is no longer possible to erase the NFT entirely.
 
 ### HTTP Request
 
