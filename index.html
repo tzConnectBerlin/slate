@@ -462,15 +462,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </span></code></pre></div>
 <p>Results are paginated.</p>
 
-<p>Optionally, a set of filters can be specified. NFTs can be filtered by:</p>
-
-<ul>
-<li><code>categories</code> (List of categories that is comma separated category id)</li>
-<li><code>userAddress</code> (NFT owner address)</li>
-<li><code>priceAtLeast</code></li>
-<li><code>priceAtMost</code></li>
-<li><code>availability</code> (comma separated inclusion list of: <code>onSale</code> / <code>soldOut</code> / <code>upcoming</code>)</li>
-</ul>
+<p>Optionally, a set of filters can be specified. NFTs can be filtered by: <code>categories</code>, <code>userAddress</code>, <code>priceAtLeast</code>, <code>priceAtMost</code>, <code>availability</code> (for more info see the <code>Query parameters</code> section below).</p>
 
 <p>For each filter, if not specified, it&#39;s not applied (so, for example, if no availability is specified, NFTs of all availability status&#39; are returned).</p>
 
@@ -484,7 +476,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <li><code>lowerPriceBound</code> and <code>upperPriceBound</code> (takes into account the selected filters, except for the price filters)</li>
 </ul>
 
-<p><code>ipfsHash</code> may be <code>null</code> in the response. It&#39;s only set (not <code>null</code>) for NFTs that have already been purchased at least once. We do this to allow remaining uncommitted to the existence of an NFT for as long as possible, this&#39;d be useful in case for some reason an NFT no longer is deemed appropriate and should be delisted. Note though that delisting is always possible, in the sense of blacklisting it from the store, however once the IPFS hash is shared and the NFT is minted on the blockchain, it is no longer possible to erase the NFT entirely.</p>
+<p>Note: <code>ipfsHash</code> may be <code>null</code> in the response. It&#39;s only set (not <code>null</code>) for NFTs that have already been purchased at least once. We do this to allow remaining uncommitted to the existence of an NFT for as long as possible. This would be useful in case for some reason an NFT no longer is deemed appropriate and should be delisted. Delisting is always possible, in the sense of blacklisting it from the store, however once the IPFS hash is shared and the NFT is minted on the blockchain, it is no longer possible to erase the NFT entirely.</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>GET /nfts</code></p>
 <h3 id='query-parameters'>Query parameters</h3>
