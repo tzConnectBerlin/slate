@@ -373,6 +373,16 @@ http "/auth/logged_user" Authorization:"Bearer $access_token"
 
 `GET /auth/logged_user`
 
+## Logout
+
+```shell
+http POST "/auth/Logout" Authorization:"Bearer $access_token"
+```
+
+### HTTP Request
+
+`POST /auth/logout`
+
 # User profile
 
 ## Get profile
@@ -456,6 +466,49 @@ Parameter | Description
 --------- | -----------
 userName | username to check availability for
 
+## Top buyers
+
+Get the list of top buyers.
+
+
+```shell
+http "/users/topBuyers"
+```
+
+> The above command only returns JSON structured alike:
+
+```
+{
+    "topBuyers": [
+        {
+            "totalPaid": "3019.91",
+            "userAddress": "tz1g3coajkc9N77XDy55pVEgBGWspQfYqMiH",
+            "userId": 1,
+            "userName": "Setter_agitated_17",
+            "userPicture": null
+        },
+        {
+            "totalPaid": "1019.84",
+            "userAddress": "tz2D1s4VvB8HU8YrYGjKQJ3zXxiJw6QHyZQa",
+            "userId": 3,
+            "userName": "utan_second-hand_10",
+            "userPicture": null
+        },
+        {
+            "totalPaid": "25.00",
+            "userAddress": "tz1WWcuiKUN4Ed5zouETqr7MbVzd3vkC4ubr",
+            "userId": 16,
+            "userName": "Rattlesnake_naive_7",
+            "userPicture": null
+        },
+        ...
+    ]
+}
+```
+
+### HTTP Request
+
+`POST /users/profile/edit (form, content-type: multipart/form-data)`
 
 # Cart
 
@@ -550,3 +603,56 @@ http POST "/payment/create-payment-intent" Authorization:"Bearer $access_token"
 ### HTTP Request
 
 `POST /payment/create-payment-intent`
+
+## Nft Ownership status
+
+This endpoint is used to find out after having finished payment whether the
+purchased NFTs have arrived to the user's wallet onchain or if this process is
+still pending.
+
+Note that a user can own multiple editions of a single NFT (though limited by 1
+edition per NFT per cart, users can own multiple editions regardless either through multiple payments
+or through onchain transfers). Therefore this endpoint returns per requested nftId
+a list of ownerships, eg if someone already fully owns nftId 1, and then purchases again nftId 1,
+until the latter purchase has been processed onchain the response for this nftId will be: `{ nftId: "37", ownerStatuses: ["owned", "pending"] }`.
+
+```
+
+```shell
+http POST /users/nftOwnership
+```
+
+Example response is alike:
+```
+[
+    {
+        nftId: "37",
+        ownerStatuses: ["owned", "pending"]
+    }
+]
+```
+
+### HTTP Request
+
+`POST /users/nftOwnership?nftIds=5,10,..`
+
+### URL parameters
+
+Parameter | Description
+--------- | -----------
+nftIds | A comma separated list of nft IDs to check the status of
+
+## Checkout cart
+
+Checking out the cart involves creating a payment intent, which then has to be
+met (finalized) in the frontend application. For example, if paying with Stripe,
+the payment intent has to be finalized by applying Stripe's SDK in the frontend.
+
+```shell
+http POST "/payment/create-payment-intent" Authorization:"Bearer $access_token"
+```
+
+### HTTP Request
+
+`POST /payment/create-payment-intent`
+
