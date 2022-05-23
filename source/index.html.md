@@ -648,9 +648,23 @@ Checking out the cart involves creating a payment intent, which then has to be
 met (finalized) in the frontend application. For example, if paying with Stripe,
 the payment intent has to be finalized by applying Stripe's SDK in the frontend.
 
+
 ```shell
 http POST "/payment/create-payment-intent" Authorization:"Bearer $access_token"
 ```
+
+Response is alike:
+```
+{
+    "amount": "0.66",
+    "currency": "EUR",
+    "clientSecret": "pi_3L2foUEdRDZNp7JF0yajTKrM_secret_cs3SWGJy7xdd5M19EwShCjbdE",
+    "id": "pi_3L2foUEdRDZNp7JF0yajTKrM"
+}
+```
+
+The "clientSecret" here is the important piece that links the following
+finalization of the payment with the newly created payment intent.
 
 ### HTTP Request
 
