@@ -411,7 +411,7 @@ http POST <span class="s2">"/auth/login"</span> <span class="o">&lt;&lt;</span><
 </span><span class="no">EOF
 </span></code></pre></div>
 <blockquote>
-<p>To authorize at authorization guarded endpoints eg <code>/auth/logged_in</code>, use this code:</p>
+<p>To authorize at authorization guarded endpoints, eg <code>/auth/logged_in</code>, set the &quot;Authorization&quot; header alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http GET <span class="s2">"/auth/logged_in"</span> <span class="se">\</span>
   Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
@@ -428,7 +428,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <h1 id='nfts'>NFTs</h1><h2 id='get-nfts-optionally-with-filters'>Get NFTs (optionally with filters)</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts"</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"currentPage"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
@@ -543,7 +543,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <h2 id='search-nfts'>Search NFTs</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/nfts/search"</span> <span class="nv">searchString</span><span class="o">==</span><span class="s1">'rock'</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="p">{</span><span class="w">
@@ -606,35 +606,31 @@ You must replace <code>$access_token</code> with your personal API key.
 <h2 id='get-a-specific-nft'>Get a specific NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/nfts/2"</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rocky"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"its something"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"artifactUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__39_image.png"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
-            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sub photography category"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Black &amp; White"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
-    </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638448715</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"editionsAvailable"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"editionsSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"launchAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638448715</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"I"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guess?"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"encoded"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1649094886</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"oldschool"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"displayUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__39_image.png"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"editionsAvailable"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"editionsSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">39</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://QmYdeHrRH1K6PKP5rmie5KYCHePJYXjn2CGauP5FJWnj2i"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"launchAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"typewriter"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.04"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"thumbnailUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__39_thumbnail.png"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting <code>/nfts</code> on number of views.</p>
+<p>Note: this is a POST, not a GET, because on each call we increment a &quot;views&quot; count. This is then used to allow for sorting <code>/nfts</code> on number of views.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST /nfts/:id</code></p>
 <h3 id='url-parameters'>URL parameters</h3>
@@ -652,7 +648,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <h1 id='categories'>Categories</h1><h2 id='get-all-categories'>Get all categories</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/categories"</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
@@ -720,7 +716,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="no">EOF
 </span></code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addr"</span><span class="p">,</span><span class="w">
@@ -729,7 +725,9 @@ You must replace <code>$access_token</code> with your personal API key.
     </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
     </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6bnVsbCwiYWRkcmVzcyI6ImFkZHIiLCJyb2xlcyI6W10sImlhdCI6MTYzNzI0ODM5Nn0.HovGQYf8QaVh0ZEdLhYBzBYqqYTrH34j6MUDBw8Bb2M"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-6'>HTTP Request</h3>
+</span></code></pre></div>
+<p>The &quot;token&quot; in the response is a JWT, it&#39;s the token that can be passed to any endpoints that require authorization by setting the &quot;Authorization&quot; header to &quot;Bearer $token&quot;.</p>
+<h3 id='http-request-6'>HTTP Request</h3>
 <p><code>POST /auth/login</code></p>
 <h3 id='body-parameters-2'>Body parameters</h3>
 <table><thead>
@@ -750,20 +748,21 @@ You must replace <code>$access_token</code> with your personal API key.
 <h2 id='logged-in-user'>Logged in user</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/auth/logged_user"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"addr"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"roles"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"utan_second-hand_10"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tz2D1s4VvB8HU8YrYGjKQJ3zXxiJw6QHyZQa"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1645716097</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"profilePicture"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-7'>HTTP Request</h3>
 <p><code>GET /auth/logged_user</code></p>
 <h1 id='user-profile'>User profile</h1><h2 id='get-profile'>Get profile</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile"</span> <span class="nv">userAddress</span><span class="o">==</span>tz1
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"nftCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
@@ -771,7 +770,6 @@ You must replace <code>$access_token</code> with your personal API key.
         </span><span class="nl">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="mi">1638452668</span><span class="p">,</span><span class="w">
         </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
         </span><span class="nl">"profilePicture"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://some-url (eg may be AWS S3 hosted)"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"roles"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
         </span><span class="nl">"userAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tz1"</span><span class="p">,</span><span class="w">
         </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test user"</span><span class="w">
     </span><span class="p">}</span><span class="w">
@@ -800,7 +798,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="nt">-f</span> POST <span class="s2">"/users/profile/edit"</span> profilePicture@./tg_image_775116946.jpeg <span class="nv">userName</span><span class="o">=</span><span class="nb">test</span>
 </code></pre></div>
 <blockquote>
-<p>The above command only returns status code (201 on success), no body</p>
+<p>The above command only returns the status code (201 on success), no body</p>
 </blockquote>
 <h3 id='http-request-9'>HTTP Request</h3>
 <p><code>POST /users/profile/edit (form, content-type: multipart/form-data)</code></p>
@@ -819,7 +817,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <h2 id='check-validity-of-username-edit'>Check validity of username edit</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile/edit/check"</span> <span class="nv">userName</span><span class="o">==</span><span class="nb">test</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"available"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
@@ -847,19 +845,18 @@ You must replace <code>$access_token</code> with your personal API key.
 <p>A cart session is either derived from the cookie session (when not logged in)
 or from the cart session that is connected to the logged in user. When logging
 in after having done some cart operations on the cookie session, the user is
-connected to the cookie based cart session. From thereon this cart session
-stays connected to this user until either it is checked out by the user, or it
-expires. If the user was already connected to some other active cart session,
-it is terminated.</p>
+connected to the cookie based cart session (and if the user was already
+connected to another cart session, this other session is canceled).</p>
 
-<p>The only endpoint that requires being logged in is the checkout endpoint.</p>
+<p>The only cart related endpoint that requires being logged in is the checkout endpoint.</p>
 
-<p>Every cart session has an expiration date. Currently this is 30 minutes after
-the last POST action (add, remove, list).</p>
+<p>Every cart session has an expiration date. In our demo deployments this is 30
+minutes after the last POST action (add, remove, list), but this can be set to
+whichever duration, determined by an environment variable.</p>
 <h2 id='list-nfts-in-the-cart'>List NFTs in the cart</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/list"</span>
 </code></pre></div>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above command returns JSON structured alike:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"expiresAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-11-18T14:29:59.403Z"</span><span class="p">,</span><span class="w">
@@ -867,19 +864,7 @@ the last POST action (add, remove, list).</p>
         </span><span class="p">{</span><span class="w">
             </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
             </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SomeNFT"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"tokenId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"contract"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"ipfsHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ipfs://somenft"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"dataUri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2"</span><span class="p">,</span><span class="w">
-            </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"encoded"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="nl">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                </span><span class="p">{</span><span class="w">
-                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mountains"</span><span class="p">,</span><span class="w">
-                    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steep hills that go heigh"</span><span class="w">
-                </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
+            </span><span class="err">...</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -889,7 +874,7 @@ the last POST action (add, remove, list).</p>
 <p>Note, this may fail if</p>
 
 <ul>
-<li>This NFT is already sold out</li>
+<li>This NFT is not for sale (eg it&#39;s already sold out, or it&#39;s not yet released)</li>
 <li>All remaining editions of this NFT are already in other active carts</li>
 <li>This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</li>
 </ul>
@@ -924,11 +909,12 @@ the last POST action (add, remove, list).</p>
 </tr>
 </tbody></table>
 <h2 id='checkout-cart'>Checkout cart</h2>
-<p>Placeholder: for now, all NFTs in the cart are immediately assigned to the
-user, without any sort of payment / minting.</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/checkout"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
+<p>Checking out the cart involves creating a payment intent, which then has to be
+met (finalized) in the frontend application. For example, if paying with Stripe,
+the payment intent has to be finalized by applying Stripe&#39;s SDK in the frontend.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/payment/create-payment-intent"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
 </code></pre></div><h3 id='http-request-14'>HTTP Request</h3>
-<p><code>POST /users/cart/checkout</code></p>
+<p><code>POST /payment/create-payment-intent</code></p>
 <h1 id='errors'>Errors</h1>
 <p>-</p>
 
