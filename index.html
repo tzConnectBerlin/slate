@@ -479,6 +479,8 @@ You must replace <code>$access_token</code> with your personal API key.
 <p>Note: <code>ipfsHash</code> may be <code>null</code> in the response. It&#39;s only set (not <code>null</code>) for NFTs that have already been purchased at least once. We do this to allow remaining uncommitted to the existence of an NFT for as long as possible. This would be useful in case for some reason an NFT no longer is deemed appropriate and should be delisted. Delisting is always possible, in the sense of blacklisting it from the store, however once the IPFS hash is shared and the NFT is minted on the blockchain, it is no longer possible to erase the NFT entirely.</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>GET /nfts</code></p>
+<h3 id='http-request-with-some-filters-set'>HTTP Request (with some filters set)</h3>
+<p><code>GET /nfts?userAddress=tz1..&amp;availability=onSale,upcoming</code></p>
 <h3 id='query-parameters'>Query parameters</h3>
 <table><thead>
 <tr>
