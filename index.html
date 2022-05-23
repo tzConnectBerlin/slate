@@ -352,6 +352,9 @@
                   <li>
                     <a href="#logged-in-user" class="toc-h2 toc-link" data-title="Logged in user">Logged in user</a>
                   </li>
+                  <li>
+                    <a href="#logout" class="toc-h2 toc-link" data-title="Logout">Logout</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -365,6 +368,9 @@
                   </li>
                   <li>
                     <a href="#check-validity-of-username-edit" class="toc-h2 toc-link" data-title="Check validity of username edit">Check validity of username edit</a>
+                  </li>
+                  <li>
+                    <a href="#top-buyers" class="toc-h2 toc-link" data-title="Top buyers">Top buyers</a>
                   </li>
               </ul>
           </li>
@@ -382,6 +388,12 @@
                   </li>
                   <li>
                     <a href="#checkout-cart" class="toc-h2 toc-link" data-title="Checkout cart">Checkout cart</a>
+                  </li>
+                  <li>
+                    <a href="#nft-ownership-status" class="toc-h2 toc-link" data-title="Nft Ownership status">Nft Ownership status</a>
+                  </li>
+                  <li>
+                    <a href="#checkout-cart-2" class="toc-h2 toc-link" data-title="Checkout cart">Checkout cart</a>
                   </li>
               </ul>
           </li>
@@ -759,6 +771,9 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h3 id='http-request-7'>HTTP Request</h3>
 <p><code>GET /auth/logged_user</code></p>
+<h2 id='logout'>Logout</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/auth/Logout"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
+</code></pre></div><h3 id='http-request-8'>HTTP Request</h3>
+<p><code>POST /auth/logout</code></p>
 <h1 id='user-profile'>User profile</h1><h2 id='get-profile'>Get profile</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/profile"</span> <span class="nv">userAddress</span><span class="o">==</span>tz1
 </code></pre></div>
 <blockquote>
@@ -774,7 +789,7 @@ You must replace <code>$access_token</code> with your personal API key.
         </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test user"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-8'>HTTP Request</h3>
+</span></code></pre></div><h3 id='http-request-9'>HTTP Request</h3>
 <p><code>GET /users/profile</code></p>
 <h3 id='query-parameters-3'>Query parameters</h3>
 <table><thead>
@@ -800,7 +815,7 @@ You must replace <code>$access_token</code> with your personal API key.
 <blockquote>
 <p>The above command only returns the status code (201 on success), no body</p>
 </blockquote>
-<h3 id='http-request-9'>HTTP Request</h3>
+<h3 id='http-request-10'>HTTP Request</h3>
 <p><code>POST /users/profile/edit (form, content-type: multipart/form-data)</code></p>
 <h3 id='body-parameters-3'>Body parameters</h3>
 <table><thead>
@@ -825,7 +840,7 @@ You must replace <code>$access_token</code> with your personal API key.
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Note: must be logged in.</p>
-<h3 id='http-request-10'>HTTP Request</h3>
+<h3 id='http-request-11'>HTTP Request</h3>
 <p><code>GET /users/profile/edit/check</code></p>
 <h3 id='query-parameters-4'>Query parameters</h3>
 <table><thead>
@@ -839,6 +854,41 @@ You must replace <code>$access_token</code> with your personal API key.
 <td>username to check availability for</td>
 </tr>
 </tbody></table>
+<h2 id='top-buyers'>Top buyers</h2>
+<p>Get the list of top buyers.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http <span class="s2">"/users/topBuyers"</span>
+</code></pre></div>
+<blockquote>
+<p>The above command only returns JSON structured alike:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>{
+    "topBuyers": [
+        {
+            "totalPaid": "3019.91",
+            "userAddress": "tz1g3coajkc9N77XDy55pVEgBGWspQfYqMiH",
+            "userId": 1,
+            "userName": "Setter_agitated_17",
+            "userPicture": null
+        },
+        {
+            "totalPaid": "1019.84",
+            "userAddress": "tz2D1s4VvB8HU8YrYGjKQJ3zXxiJw6QHyZQa",
+            "userId": 3,
+            "userName": "utan_second-hand_10",
+            "userPicture": null
+        },
+        {
+            "totalPaid": "25.00",
+            "userAddress": "tz1WWcuiKUN4Ed5zouETqr7MbVzd3vkC4ubr",
+            "userId": 16,
+            "userName": "Rattlesnake_naive_7",
+            "userPicture": null
+        },
+        ...
+    ]
+}
+</code></pre></div><h3 id='http-request-12'>HTTP Request</h3>
+<p><code>POST /users/profile/edit (form, content-type: multipart/form-data)</code></p>
 <h1 id='cart'>Cart</h1>
 <p>All endpoints related to shopping cart management.</p>
 
@@ -868,7 +918,7 @@ whichever duration, determined by an environment variable.</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><h3 id='http-request-11'>HTTP Request</h3>
+</span></code></pre></div><h3 id='http-request-13'>HTTP Request</h3>
 <p><code>POST /users/cart/list</code></p>
 <h2 id='add-nft'>Add NFT</h2>
 <p>Note, this may fail if</p>
@@ -879,7 +929,7 @@ whichever duration, determined by an environment variable.</p>
 <li>This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)</li>
 </ul>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/add/2"</span>
-</code></pre></div><h3 id='http-request-12'>HTTP Request</h3>
+</code></pre></div><h3 id='http-request-14'>HTTP Request</h3>
 <p><code>POST /users/cart/add/:id</code></p>
 <h3 id='url-parameters-2'>URL parameters</h3>
 <table><thead>
@@ -894,7 +944,7 @@ whichever duration, determined by an environment variable.</p>
 </tr>
 </tbody></table>
 <h2 id='remove-nft'>Remove NFT</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/users/cart/remove/2"</span>
-</code></pre></div><h3 id='http-request-13'>HTTP Request</h3>
+</code></pre></div><h3 id='http-request-15'>HTTP Request</h3>
 <p><code>POST /users/cart/remove/:id</code></p>
 <h3 id='url-parameters-3'>URL parameters</h3>
 <table><thead>
@@ -913,7 +963,51 @@ whichever duration, determined by an environment variable.</p>
 met (finalized) in the frontend application. For example, if paying with Stripe,
 the payment intent has to be finalized by applying Stripe&#39;s SDK in the frontend.</p>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/payment/create-payment-intent"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
-</code></pre></div><h3 id='http-request-14'>HTTP Request</h3>
+</code></pre></div><h3 id='http-request-16'>HTTP Request</h3>
+<p><code>POST /payment/create-payment-intent</code></p>
+<h2 id='nft-ownership-status'>Nft Ownership status</h2>
+<p>This endpoint is used to find out after having finished payment whether the
+purchased NFTs have arrived to the user&#39;s wallet onchain or if this process is
+still pending.</p>
+
+<p>Note that a user can own multiple editions of a single NFT (though limited by 1
+edition per NFT per cart, users can own multiple editions regardless either through multiple payments
+or through onchain transfers). Therefore this endpoint returns per requested nftId
+a list of ownerships, eg if someone already fully owns nftId 1, and then purchases again nftId 1,
+until the latter purchase has been processed onchain the response for this nftId will be: <code>{ nftId: &quot;37&quot;, ownerStatuses: [&quot;owned&quot;, &quot;pending&quot;] }</code>.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>
+```shell
+http POST /users/nftOwnership
+</code></pre></div>
+<p>Example response is alike:
+<code>
+[
+    {
+        nftId: &quot;37&quot;,
+        ownerStatuses: [&quot;owned&quot;, &quot;pending&quot;]
+    }
+]
+</code></p>
+<h3 id='http-request-17'>HTTP Request</h3>
+<p><code>POST /users/nftOwnership?nftIds=5,10,..</code></p>
+<h3 id='url-parameters-4'>URL parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>nftIds</td>
+<td>A comma separated list of nft IDs to check the status of</td>
+</tr>
+</tbody></table>
+<h2 id='checkout-cart-2'>Checkout cart</h2>
+<p>Checking out the cart involves creating a payment intent, which then has to be
+met (finalized) in the frontend application. For example, if paying with Stripe,
+the payment intent has to be finalized by applying Stripe&#39;s SDK in the frontend.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/payment/create-payment-intent"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
+</code></pre></div><h3 id='http-request-18'>HTTP Request</h3>
 <p><code>POST /payment/create-payment-intent</code></p>
 <h1 id='errors'>Errors</h1>
 <p>-</p>
