@@ -1007,7 +1007,20 @@ http POST /users/nftOwnership
 met (finalized) in the frontend application. For example, if paying with Stripe,
 the payment intent has to be finalized by applying Stripe&#39;s SDK in the frontend.</p>
 <div class="highlight"><pre class="highlight shell tab-shell"><code>http POST <span class="s2">"/payment/create-payment-intent"</span> Authorization:<span class="s2">"Bearer </span><span class="nv">$access_token</span><span class="s2">"</span>
-</code></pre></div><h3 id='http-request-18'>HTTP Request</h3>
+</code></pre></div>
+<p>Response is alike:
+<code>
+{
+    &quot;amount&quot;: &quot;0.66&quot;,
+    &quot;currency&quot;: &quot;EUR&quot;,
+    &quot;clientSecret&quot;: &quot;pi_3L2foUEdRDZNp7JF0yajTKrM_secret_cs3SWGJy7xdd5M19EwShCjbdE&quot;,
+    &quot;id&quot;: &quot;pi_3L2foUEdRDZNp7JF0yajTKrM&quot;
+}
+</code></p>
+
+<p>The &quot;clientSecret&quot; here is the important piece that links the following
+finalization of the payment with the newly created payment intent.</p>
+<h3 id='http-request-18'>HTTP Request</h3>
 <p><code>POST /payment/create-payment-intent</code></p>
 <h1 id='errors'>Errors</h1>
 <p>-</p>
