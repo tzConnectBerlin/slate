@@ -39,7 +39,7 @@ http POST "/auth/login" <<EOF
 EOF
 ```
 
-> To authorize at authorization guarded endpoints eg `/auth/logged_in`, use this code:
+> To authorize at authorization guarded endpoints, eg `/auth/logged_in`, set the "Authorization" header alike:
 
 ```shell
 http GET "/auth/logged_in" \
@@ -62,7 +62,7 @@ For more info see the "Users auth" section.
 http "/nfts"
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
@@ -98,13 +98,7 @@ http "/nfts"
 
 Results are paginated.
 
-Optionally, a set of filters can be specified. NFTs can be filtered by:
-
-- `categories` (List of categories that is comma separated category id)
-- `userAddress` (NFT owner address)
-- `priceAtLeast`
-- `priceAtMost`
-- `availability` (comma separated inclusion list of: `onSale` / `soldOut` / `upcoming`)
+Optionally, a set of filters can be specified. NFTs can be filtered by: `categories`, `userAddress`, `priceAtLeast`, `priceAtMost`, `availability` (for more info see the `Query parameters` section below).
 
 For each filter, if not specified, it's not applied (so, for example, if no availability is specified, NFTs of all availability status' are returned).
 
@@ -116,11 +110,15 @@ The return includes additional general info:
 - `numberOfPages` (takes into account the selected filters and `pageSize`)
 - `lowerPriceBound` and `upperPriceBound` (takes into account the selected filters, except for the price filters)
 
-`ipfsHash` may be `null` in the response. It's only set (not `null`) for NFTs that have already been purchased at least once. We do this to allow remaining uncommitted to the existence of an NFT for as long as possible, this'd be useful in case for some reason an NFT no longer is deemed appropriate and should be delisted. Note though that delisting is always possible, in the sense of blacklisting it from the store, however once the IPFS hash is shared and the NFT is minted on the blockchain, it is no longer possible to erase the NFT entirely.
+Note: `ipfsHash` may be `null` in the response. It's only set (not `null`) for NFTs that have already been purchased at least once. We do this to allow remaining uncommitted to the existence of an NFT for as long as possible. This would be useful in case for some reason an NFT no longer is deemed appropriate and should be delisted. Delisting is always possible, in the sense of blacklisting it from the store, however once the IPFS hash is shared and the NFT is minted on the blockchain, it is no longer possible to erase the NFT entirely.
 
 ### HTTP Request
 
 `GET /nfts`
+
+### HTTP Request (with some filters set)
+
+`GET /nfts?userAddress=tz1..&availability=onSale,upcoming`
 
 ### Query parameters
 
@@ -143,7 +141,7 @@ firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagin
 ```shell
 http "/nfts/search" searchString=='rock'
 ```
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 
@@ -156,30 +154,28 @@ http "/nfts/search" searchString=='rock'
         }
 	],
     "nfts": [
+        "nfts": [
         {
-            "name": "rocky",
-            "description": "its something",
+            "artifactUri": "https://kanvas-admin-files.s3.amazonaws.com/NFT_FILE__54_image.png",
             "categories": [
                 {
-                    "description": "steep hills that go heigh",
-                    "id": 1,
-                    "name": "mountains"
+                    "description": "Sub photography category",
+                    "id": 9,
+                    "name": "Abstract"
                 }
             ],
-            "contract": null,
-            "createdAt": 1638448715,
-            "dataUri": null,
-            "editionsAvailable": 0,
-            "editionsSize": 1,
-            "id": 1,
-            "ipfsHash": "ipfs://somenft",
-            "launchAt": 1638448715,
-            "metadata": {
-                "I": "guess?",
-                "json": "encoded"
-            },
-            "price": 1,
-            "tokenId": null
+            "createdAt": 1653314947,
+            "description": "testing nft end date",
+            "displayUri": "https://kanvas-admin-files.s3.amazonaws.com/NFT_FILE__54_image.png",
+            "editionsAvailable": 33,
+            "editionsSize": 34,
+            "id": 54,
+            "ipfsHash": "ipfs://QmUVVgxmjpBt6SF8pNJZRNJiqy5nczL9xN8jiNJkTDApGW",
+            "launchAt": 0,
+            "name": "nft with end date",
+            "onsaleUntil": 1662019200,
+            "price": "13.00",
+            "thumbnailUri": "https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__54_thumbnail.png"
         }
     ]
 }
@@ -209,37 +205,33 @@ searchString | The text to search for
 http POST "/nfts/2"
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
-    "id": 2,
-    "name": "rocky",
-    "description": "its something",
+    "artifactUri": "https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__39_image.png",
     "categories": [
         {
-            "description": "steep hills that go heigh",
-            "id": 1,
-            "name": "mountains"
+            "description": "Sub photography category",
+            "id": 16,
+            "name": "Black & White"
         }
     ],
-    "contract": null,
-    "createdAt": 1638448715,
-    "dataUri": null,
-    "editionsAvailable": 0,
-    "editionsSize": 1,
-    "ipfsHash": "ipfs://somenft",
-    "launchAt": 1638448715,
-    "metadata": {
-        "I": "guess?",
-        "json": "encoded"
-    },
-    "price": 1,
-    "tokenId": null
+    "createdAt": 1649094886,
+    "description": "oldschool",
+    "displayUri": "https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__39_image.png",
+    "editionsAvailable": 3,
+    "editionsSize": 6,
+    "id": 39,
+    "ipfsHash": "ipfs://QmYdeHrRH1K6PKP5rmie5KYCHePJYXjn2CGauP5FJWnj2i",
+    "launchAt": 0,
+    "name": "typewriter",
+    "price": "0.04",
+    "thumbnailUri": "https://kanvas-admin-files.s3.eu-central-1.amazonaws.com/NFT_FILE__39_thumbnail.png"
 }
 ```
 
-Note: this is a POST, not a GET, because on each call we increment a views count. This is then used to allow for sorting `/nfts` on number of views.
+Note: this is a POST, not a GET, because on each call we increment a "views" count. This is then used to allow for sorting `/nfts` on number of views.
 
 ### HTTP Request
 
@@ -260,7 +252,7 @@ id | The id of the NFT to retrieve
 http "/categories"
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 [
@@ -334,7 +326,7 @@ http POST "/auth/login" <<EOF
 EOF
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
@@ -345,6 +337,8 @@ EOF
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6bnVsbCwiYWRkcmVzcyI6ImFkZHIiLCJyb2xlcyI6W10sImlhdCI6MTYzNzI0ODM5Nn0.HovGQYf8QaVh0ZEdLhYBzBYqqYTrH34j6MUDBw8Bb2M"
 }
 ```
+
+The "token" in the response is a JWT, it's the token that can be passed to any endpoints that require authorization by setting the "Authorization" header to "Bearer $token".
 
 ### HTTP Request
 
@@ -363,14 +357,15 @@ signedPayload | password
 http "/auth/logged_user" Authorization:"Bearer $access_token"
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
-    "userAddress": "addr",
-    "id": 1,
-    "userName": null,
-    "roles": []
+    "id": 3,
+    "userName": "utan_second-hand_10",
+    "userAddress": "tz2D1s4VvB8HU8YrYGjKQJ3zXxiJw6QHyZQa",
+    "createdAt": 1645716097,
+    "profilePicture": null
 }
 ```
 
@@ -386,7 +381,7 @@ http "/auth/logged_user" Authorization:"Bearer $access_token"
 http "/users/profile" userAddress==tz1
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
@@ -395,7 +390,6 @@ http "/users/profile" userAddress==tz1
         "createdAt": 1638452668,
         "id": 2,
         "profilePicture": "https://some-url (eg may be AWS S3 hosted)",
-        "roles": [],
         "userAddress": "tz1",
         "userName": "test user"
     }
@@ -423,7 +417,7 @@ Edit:
 http -f POST "/users/profile/edit" profilePicture@./tg_image_775116946.jpeg userName=test
 ```
 
-> The above command only returns status code (201 on success), no body
+> The above command only returns the status code (201 on success), no body
 
 ### HTTP Request
 
@@ -441,7 +435,7 @@ userName | change username
 http "/users/profile/edit/check" userName==test
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
@@ -470,15 +464,14 @@ All endpoints related to shopping cart management.
 A cart session is either derived from the cookie session (when not logged in)
 or from the cart session that is connected to the logged in user. When logging
 in after having done some cart operations on the cookie session, the user is
-connected to the cookie based cart session. From thereon this cart session
-stays connected to this user until either it is checked out by the user, or it
-expires. If the user was already connected to some other active cart session,
-it is terminated.
+connected to the cookie based cart session (and if the user was already
+connected to another cart session, this other session is canceled).
 
-The only endpoint that requires being logged in is the checkout endpoint.
+The only cart related endpoint that requires being logged in is the checkout endpoint.
 
-Every cart session has an expiration date. Currently this is 30 minutes after
-the last POST action (add, remove, list).
+Every cart session has an expiration date. In our demo deployments this is 30
+minutes after the last POST action (add, remove, list), but this can be set to
+whichever duration, determined by an environment variable.
 
 ## List NFTs in the cart
 
@@ -486,7 +479,7 @@ the last POST action (add, remove, list).
 http POST "/users/cart/list"
 ```
 
-> The above command returns JSON structured like this:
+> The above command returns JSON structured alike:
 
 ```json
 {
@@ -495,19 +488,7 @@ http POST "/users/cart/list"
         {
             "id": 1,
             "name": "SomeNFT",
-            "tokenId": null,
-            "contract": null,
-            "ipfsHash": "ipfs://somenft",
-            "dataUri": "https://d-art.mypinata.cloud/ipfs/Qmf9LEvo73GGeymjxMYWCggc91DKCXcKVAiNoHT6ZVrjq2",
-            "metadata": {
-                "json": "encoded"
-            },
-            "categories": [
-                {
-                    "name": "mountains",
-                    "description": "steep hills that go heigh"
-                }
-            ]
+            ...
         }
     ]
 }
@@ -522,7 +503,7 @@ http POST "/users/cart/list"
 
 Note, this may fail if
 
-* This NFT is already sold out
+* This NFT is not for sale (eg it's already sold out, or it's not yet released)
 * All remaining editions of this NFT are already in other active carts
 * This NFT is already in the active cart (currently we only allow 1 edition per NFT per active cart)
 
@@ -558,13 +539,14 @@ id | The id of the NFT to remove from the cart
 
 ## Checkout cart
 
-Placeholder: for now, all NFTs in the cart are immediately assigned to the
-user, without any sort of payment / minting.
+Checking out the cart involves creating a payment intent, which then has to be
+met (finalized) in the frontend application. For example, if paying with Stripe,
+the payment intent has to be finalized by applying Stripe's SDK in the frontend.
 
 ```shell
-http POST "/users/cart/checkout" Authorization:"Bearer $access_token"
+http POST "/payment/create-payment-intent" Authorization:"Bearer $access_token"
 ```
 
 ### HTTP Request
 
-`POST /users/cart/checkout`
+`POST /payment/create-payment-intent`
