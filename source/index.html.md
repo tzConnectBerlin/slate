@@ -134,6 +134,7 @@ availability | undefined | Comma separated enable-list of availability status (e
 priceAtLeast | undefined | Get NFTs that at least cost `x` amount (`x` is inclusive).
 priceAtMost | undefined | Get NFTs that at most cost `x` amount (`x` is inclusive).
 firstRequestAt | undefined | In seconds since UNIX, the timestamp of first pagination action (note: responsibility of setting this is at the caller). If set, only NFTs will be returned that were listed on the store at or before this timestamp.
+currency | EUR | Specify on which currency the price is returned. Options: USD, GBP, EUR, XTZ.
 
 
 ## Search NFTs
